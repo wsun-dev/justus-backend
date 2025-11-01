@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: justus
+      POSTGRES_PASSWORD: justus123
+      POSTGRES_DB: justus_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: .
+    restart: always
+    volumes:
+      - ./app:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://justus:justus123@db:5432/justus_db
+
+volumes:
+  postgres_data:
