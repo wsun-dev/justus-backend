@@ -16,14 +16,16 @@ services:
   backend:
     build: .
     restart: always
-    volumes:
-      - ./app:/code
+    #volumes:
+    #  - ./app:/code
     ports:
       - "8000:8000"
     depends_on:
       - db
     environment:
-      DATABASE_URL: postgres://justus:justus123@db:5432/justus_db
+      DATABASE_URL: postgresql://justus:justus123@db:5432/justus_db
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir app
+
 
 volumes:
   postgres_data:
